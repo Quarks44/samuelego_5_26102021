@@ -1,44 +1,38 @@
 // URL du produit
-let productsURL = 'http://localhost:3000/api/products/';
+let productsURL = "http://localhost:3000/api/products/";
 
 //  ETAPE 6 : Insérer un produit et ses détails dans la page
-Produit
-function create_Product (elements) {
-    const kanap = document.create_Element ('');  //document  : https://developer.mozilla.org/fr/docs/Web/API/Document/Document
-    kanap.href = 'http://localhost:3000/api/products/' + productId;
 
+// Produits Kanap
+function create_Product(elements) {
+  // Création élément
+  const kanap = document.create_Element("a"); //document  : https://developer.mozilla.org/fr/docs/Web/API/Document/Document
+  kanap.href = "http://localhost:3000/api/products/" + productId;
 
+  // Création constructor article,name,image et description
+  const product_article = document.createElement("article"); // const article
 
-    const product_article  = document.createElement ('');        // const article
+  const product_name = document.createElement("h3"); // const name
+  product_name.innerHTML = elements.name;
+  product_name.classList.add("productName"); // ajout class productName
 
-    const product_name = document.createElement ('');           // const name
-    product_name
+  const product_picture = document.createElement("img"); // const imageUrl
+  product_picture.src = elements.ImageUrl;
+  product_picture.alt = elements.Alt;
 
+  const product_descrption = document.createElement("p"); // const description
+  product_descrption.innerHTML = elements.description; // insertion lien HTML
+  product_descrption.classList.add("productDescription"); // ajout class productDescription
 
-    const product_picture = document.createElement ('');         // const imageUrl
-    product_picture.src
-
-
-
-    const product_descrption = document.createElement ('');     // const description
-    product_descrption
-
-
-
-
-    
-    
-    
-    
+  // Insertion dans la page produit (DOM)
+  product_article.appendChild(product_name);
+  product_article.appendChild(product_picture);
+  product_article.appendChild(product_descrption);
 }
 
 //  ETAPE 5 : Récupérer l’id du produit à afﬁcher
 
-
-
-
-
 // extraction ID
-let productId = "107fb5b75607497b96722bda5b504926" ;
-let create_item_page_url = 'http://localhost:3000/api/products/'+ productId
-console.log (create_item_page_url);
+let productId = "107fb5b75607497b96722bda5b504926";
+let create_item_page_url = "http://localhost:3000/api/products/" + productId;
+console.log(create_item_page_url);
