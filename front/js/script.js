@@ -1,12 +1,12 @@
-// URL du produit
+// URL API du produit
 let productsURL = "http://localhost:3000/api/products/";
 
 //  ETAPE 6 : Insérer un produit et ses détails dans la page
 
-// Produits Kanap
+ // Création élément (produit)
 function create_Product(elements) {
-  // Création élément
-  const kanap = document.create_Element("a"); //document  : https://developer.mozilla.org/fr/docs/Web/API/Document/Document
+ 
+  const kanap = document.create_Element("a"); // https://developer.mozilla.org/fr/docs/Web/API/Document/Document
   kanap.href = "http://localhost:3000/api/products/" + productId;
 
   // Création constructor article,name,image et description
@@ -30,9 +30,19 @@ function create_Product(elements) {
   product_article.appendChild(product_descrption);
 }
 
-//  ETAPE 5 : Récupérer l’id du produit à afﬁcher
-
 // extraction ID
 let productId = "107fb5b75607497b96722bda5b504926";
 let create_item_page_url = "http://localhost:3000/api/products/" + productId;
 console.log(create_item_page_url);
+
+function Data (URL) { // https://developer.mozilla.org/fr/docs/Web/API/URL
+fetch (URL) // https://developer.mozilla.org/fr/docs/Web/API/Fetch_API/Using_Fetch
+.then(function(response) {
+  if(response.ok) {
+    return response//???
+    else {
+      console.error('erreur') //https://developer.mozilla.org/fr/docs/Web/API/Console/error
+    }
+  }
+}
+}
