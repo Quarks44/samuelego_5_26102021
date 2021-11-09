@@ -11,5 +11,5 @@ const colorDescription = document.getElementById("colors");
 
 // Récuperaton ID dans l'URl
 
-var urlSearchParams = URLSearchParams
-var productId = urlSearchParams.getElementById('id');
+const urlSearchParams = URLSearchParams;
+const productId = urlSearchParams.getElementById("id");
