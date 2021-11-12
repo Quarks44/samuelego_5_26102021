@@ -29,7 +29,7 @@ function create_Product(elements) {
   const kanap = document.create_Element("a"); // https://developer.mozilla.org/fr/docs/Web/API/Document/Document
   kanap.href = "http://localhost:3000/api/products/" + productId;
 
-  // Création constructor article, name, image et description
+  // Création article, name, image et description
   const product_article = document.createElement("article"); // const article
 
   const product_name = document.createElement("h3"); // const name
@@ -55,6 +55,11 @@ var title = document.getElementById("title");
 var price = document.getElementById("price");
 var description = document.getElementById("description");
 var colorDescription = document.getElementById("colors");
+
+// Insertion detail dans page produit
+// ajout
+//function detail_Product(elements){
+// end function
 
 // ETAPE 5
 
