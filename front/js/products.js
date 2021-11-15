@@ -1,17 +1,15 @@
-// ETAPE 6
-
 // URL de API d'un produit
 let productsURL = "http://localhost:3000/api/products/" + product_id;
 
-// extraction ID
-let productId = "107fb5b75607497b96722bda5b504926";
-let create_item_page_url = "http://localhost:3000/api/products/" + productId;
-console.log(create_item_page_url);
+// Récupération ID de l'url de la page produit
+var paramsString = location.search;
+var searchParams = new URLSearchParams(paramsString); //https://developer.mozilla.org/fr/docs/Web/API/URLSearchParams
+var product_id = searchParams.get("product_id");
 
 // API
-function FetchItem(create_item_page_url) {
+function FetchID() {
   // https://developer.mozilla.org/fr/docs/Web/API/URL
-  fetch(create_item_page_url)
+  fetch(productsURL)
     .then(function (response) {
       if (response.ok) {
         return response.json();
@@ -24,46 +22,49 @@ function FetchItem(create_item_page_url) {
     });
 }
 
-// Création élément (produit)
-function create_Product(elements) {
-  const kanap = document.create_Element("a"); // https://developer.mozilla.org/fr/docs/Web/API/Document/Document
-  kanap.href = "http://localhost:3000/api/products/" + productId;
+// constructor classe prodiuit
 
-  // Création article, name, image et description
-  const product_article = document.createElement("article"); // const article
+class classProduct {
+  constructor(id, name, imageUrl, altTxt, price, description, colors) {
+    this.id = id;
+    this.name = name;
+    this.imageUrl = imageUrl;
+    this.altTxt = altTxt;
+    this.price = price;
+    this.description = description;
+    this.colors = colors;
+  }
+} //end class
 
-  const product_name = document.createElement("h3"); // const name
-  product_name.innerHTML = elements.name; // insertion lien HTML
-  product_name.classList.add("productName"); // ajout class productName
+// affichage Kanap // page 4 specification
 
-  const product_picture = document.createElement("img"); // const imageUrl
-  product_picture.src = elements.ImageUrl;
-  product_picture.alt = elements.Alt;
+function displayKanap(sofa) {
+  const productTitle = document.getElementById("title"); //https://developer.mozilla.org/fr/docs/Web/API/Document/getElementById
+  productTitle.textContent = kanap.name; //https://developer.mozilla.org/fr/docs/Web/API/Node/textContent
 
-  const product_descrption = document.createElement("p"); // const description
-  product_descrption.innerHTML = elements.description;
-  product_descrption.classList.add("productDescription"); // ajout class productDescription
+  const productPicture = document.getElementById("item__img");
+  const productPhoto = document.createElement("img"); // https://developer.mozilla.org/fr/docs/Web/API/Document/createElement
+  productPhoto.setAttribute("src", sofa.imageUrl); //https://developer.mozilla.org/fr/docs/Web/API/Element/setAttribute
+  productPhoto.setAttribute("alt", sofa.altTxt);
+  productPicture.appendChild(productPhoto); //https://developer.mozilla.org/fr/docs/Web/API/Node/appendChild
 
-  // Page produit (DOM)
-  product_article.appendChild(product_name);
-  product_article.appendChild(product_picture);
-  product_article.appendChild(product_descrption);
-}
+  const productPrice = document.getElementById("price");
+  productPrice.innerHTML = sofa.price;
 
-// Récuperation via API des informations produits
-var title = document.getElementById("title");
-var price = document.getElementById("price");
-var description = document.getElementById("description");
-var colorDescription = document.getElementById("colors");
+  const productDescription = document.getElementById("description");
+  productDescription.innerHTML = sofa.description;
 
-// Insertion detail dans page produit
-// ajout
-//function detail_Product(elements){
-// end function
+  const productColorDescription = document.getElementById("colors");
+  productColorDescription.innerHTML = sofa.colors;
 
-// ETAPE 5
+  // affichage couleur //etapae 7
+  for (let displayColor of productColorDescription) {
+    const color = document.createElement("option");
+    color.setAttribute("value", displayColor);
+    color.textContent = displayColor;
+    productColorDescription.appendChild(color);
+  } //end for
+  return;
+} // end function
 
-// Récupération ID de l'url de la page produit
-var paramsString = location.search;
-var searchParams = new URLSearchParams(paramsString);
-var product_id = searchParams.get("product_id");
+// fonction principale
