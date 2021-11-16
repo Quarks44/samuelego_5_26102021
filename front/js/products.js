@@ -1,30 +1,19 @@
-// URL de API d'un produit
-let productsURL = "http://localhost:3000/api/products/" + product_id;
-
-// Récupération ID de l'url de la page produit
-var paramsString = location.search;
-var searchParams = new URLSearchParams(paramsString); //https://developer.mozilla.org/fr/docs/Web/API/URLSearchParams
-var product_id = searchParams.get("product_id");
-
-// API
-function FetchID() {
-  // https://developer.mozilla.org/fr/docs/Web/API/URL
-  fetch(productsURL)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      } else {
-        console.log("mauvaise réponse du réseau"); //https://developer.mozilla.org/fr/docs/Web/API/Console/error
+//  API + productId
+async function fetchId(productId) {
+  return fetch("http://localhost:3000/api/products/" + productId)
+    .then(function (res) {
+      if (res.ok) {
+        return res.json();
       }
     })
     .catch(function (error) {
-      console.log("problème avec fetch");
+      console.log(error);
     });
-}
+} // end function
 
-// constructor classe prodiuit
+// constructor classe produit
 
-class classProduct {
+class productClass {
   constructor(id, name, imageUrl, altTxt, price, description, colors) {
     this.id = id;
     this.name = name;
@@ -36,35 +25,43 @@ class classProduct {
   }
 } //end class
 
-// affichage Kanap // page 4 specification
-
+// affichage 1 produit
 function displayKanap(sofa) {
-  const productTitle = document.getElementById("title"); //https://developer.mozilla.org/fr/docs/Web/API/Document/getElementById
-  productTitle.textContent = kanap.name; //https://developer.mozilla.org/fr/docs/Web/API/Node/textContent
-
-  const productPicture = document.getElementById("item__img");
-  const productPhoto = document.createElement("img"); // https://developer.mozilla.org/fr/docs/Web/API/Document/createElement
-  productPhoto.setAttribute("src", sofa.imageUrl); //https://developer.mozilla.org/fr/docs/Web/API/Element/setAttribute
+  // selecteur +  attributs
+  const productPicture = document.querySelector("div.item__img");
+  const productPhoto = document.createElement("img");
+  productPhoto.setAttribute("src", sofa.imageUrl);
   productPhoto.setAttribute("alt", sofa.altTxt);
-  productPicture.appendChild(productPhoto); //https://developer.mozilla.org/fr/docs/Web/API/Node/appendChild
+  productPicture.appendChild(productPhoto);
+
+  const productTitle = document.getElementById("title");
+  productTitle.innerText = sofa.name;
 
   const productPrice = document.getElementById("price");
-  productPrice.innerHTML = sofa.price;
+  productPrice.innerText = sofa.price;
 
   const productDescription = document.getElementById("description");
-  productDescription.innerHTML = sofa.description;
+  productDescription.innerText = sofa.description;
 
-  const productColorDescription = document.getElementById("colors");
-  productColorDescription.innerHTML = sofa.colors;
+  let productColor = document.getElementById("colors");
+  let listColor = product.colors;
 
-  // affichage couleur //etapae 7
-  for (let displayColor of productColorDescription) {
-    const color = document.createElement("option");
-    color.setAttribute("value", displayColor);
-    color.textContent = displayColor;
-    productColorDescription.appendChild(color);
-  } //end for
-  return;
+  // liste couleurs
+  for (let color of listColor) {
+    let displayColor = document.createElement("option");
+    displayColor.setAttribute("value", color);
+    displayColor.innerText = color;
+    productColor.appendChild(displayColor);
+  }
 } // end function
 
-// fonction principale
+// Principale Fonction
+
+async function main() {
+  let url = new URL(location.href); //  url
+  let productId = url.searchParams.get("id");
+  let product = await fetchId(productId); // attendre reponse API
+  displayKanap(product); // affichage produit
+}
+
+main();
