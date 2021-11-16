@@ -26,22 +26,22 @@ class productClass {
 } //end class
 
 // affichage 1 produit
-function displayKanap(sofa) {
+function displayKanap(product) {
   // selecteur +  attributs
   const productPicture = document.querySelector("div.item__img");
   const productPhoto = document.createElement("img");
-  productPhoto.setAttribute("src", sofa.imageUrl);
-  productPhoto.setAttribute("alt", sofa.altTxt);
+  productPhoto.setAttribute("src", product.imageUrl);
+  productPhoto.setAttribute("alt", product.altTxt);
   productPicture.appendChild(productPhoto);
 
   const productTitle = document.getElementById("title");
-  productTitle.innerText = sofa.name;
+  productTitle.innerText = product.name;
 
   const productPrice = document.getElementById("price");
-  productPrice.innerText = sofa.price;
+  productPrice.innerText = product.price;
 
   const productDescription = document.getElementById("description");
-  productDescription.innerText = sofa.description;
+  productDescription.innerText = product.description;
 
   let productColor = document.getElementById("colors");
   let listColor = product.colors;
