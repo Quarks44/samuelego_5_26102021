@@ -1,6 +1,6 @@
 //  API
 async function fetchApi() {
-  return fetch("http://localhost:3000/api/products/")
+  return fetch("http://localhost:3000/api/products")
     .then(function (res) {
       if (res.ok) {
         return res.json();
@@ -11,15 +11,13 @@ async function fetchApi() {
     });
 } // end function
 
-//function displayKanaps(products) {}
-//let  = document.getElementById("items");
-//end function
-
 // Affichage plusieurs produits
+
 function displayAllKanaps(listofAllKanaps) {
+  let = document.getElementById("items");
   //  lien  fiche produit
   const sofaId = document.createElement("a");
-  sofaId.href = "product.html?id=" + productId;
+  sofaId.href = "product.html?id=" + listofAllKanaps.id;
 
   // Création Article
   const article = document.createElement("article");
@@ -49,9 +47,9 @@ function displayAllKanaps(listofAllKanaps) {
 
 // Principale Fonction
 async function main() {
-  let listofAllKanaps = await fetchApi(); // = API
-  for (let element of listofAllKanaps) {
-    displayKanap(listofAllKanaps); // affichage
+  let listofAllKanaps = await fetchApi();
+  for (let kanap of listofAllKanaps) {
+    displayAllKanaps(kanap); // affichage
   }
 }
 main();
