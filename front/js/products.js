@@ -1,5 +1,5 @@
 //  API + productId
-async function fetchId(productId) {
+async function fetchId() {
   return fetch("http://localhost:3000/api/products/" + productId)
     .then(function (res) {
       if (res.ok) {
