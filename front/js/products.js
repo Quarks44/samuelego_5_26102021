@@ -1,5 +1,5 @@
 //  API + productId
-async function fetchId() {
+async function fetchProductById(productId) {
   return fetch("http://localhost:3000/api/products/" + productId)
     .then(function (res) {
       if (res.ok) {
@@ -10,20 +10,6 @@ async function fetchId() {
       console.log(error);
     });
 } // end function
-
-// constructor classe produit
-
-class productClass {
-  constructor(id, name, imageUrl, altTxt, price, description, colors) {
-    this.id = id;
-    this.name = name;
-    this.imageUrl = imageUrl;
-    this.altTxt = altTxt;
-    this.price = price;
-    this.description = description;
-    this.colors = colors;
-  }
-} //end class
 
 // affichage 1 produit
 function displayKanap(product) {
@@ -60,8 +46,29 @@ function displayKanap(product) {
 async function main() {
   let url = new URL(location.href); //  url
   let productId = url.searchParams.get("id");
-  let product = await fetchId(productId); // attendre reponse API
+  let product = await fetchProductById(productId); // attendre reponse API
   displayKanap(product); // affichage produit
 }
 
 main();
+
+// Fonction ajout au panier
+
+function addToCart(basket) {
+  buttonAddToCart.addEventListener('click', // https://www.w3schools.com/jsref/met_element_addeventlistener.asp
+  function (dataCart) {
+      // informations du produit à ajouter au panier au format Json
+      let productJson = {
+          id : productId,
+          name : title.innerHTML,
+          price : price.innerHTML,
+          image : document.getElementById('imageItem').src,
+          altText : document.getElementById('imageItem').alt,
+          quantity : parseInt(document.getElementById('quantity').value, 10), // https://www.w3schools.com/jsreF/jsref_parseint.asp
+          color : document.getElementById('colors').value,
+      }
+
+      // Récupération de la liste des produits ajoutés au localStorage
+      let datasInStorage = JSON.parse(localStorage.getItem('product-ID'));
+
+    } // end function

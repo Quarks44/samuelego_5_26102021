@@ -11,8 +11,3 @@ function ProductToCart() {
   }
 }
 
-// Récupération quantité
-
-let quantity = document.getElementsByClassName("itemQuantity"); // https://developer.mozilla.org/fr/docs/Web/API/Document/getElementsByClassName
-
-let totalQuantity = document.getElementsByClassName("totalQuantity");

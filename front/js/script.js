@@ -17,7 +17,7 @@ function displayAllKanaps(listofAllKanaps) {
   let = document.getElementById("items");
   //  lien  fiche produit
   const sofaId = document.createElement("a");
-  sofaId.href = "product.html?id=" + listofAllKanaps.id;
+  sofaId.href = "product.html?id=" + listofAllKanaps._id;
 
   // Création Article
   const article = document.createElement("article");
