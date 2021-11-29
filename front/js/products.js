@@ -47,28 +47,62 @@ async function main() {
   let url = new URL(location.href); //  url
   let productId = url.searchParams.get("id");
   let product = await fetchProductById(productId); // attendre reponse API
-  displayKanap(product); // affichage produit
-}
+  displayKanap(product); // affichage produit et passe le product ID
+  addToCart(productId); // Ajoute la fonctionalite au bouton "addToCart"
+} // end function
 
 main();
 
 // Fonction ajout au panier
 
-function addToCart(basket) {
-  buttonAddToCart.addEventListener('click', // https://www.w3schools.com/jsref/met_element_addeventlistener.asp
-  function (dataCart) {
+function addToCart(productId) {
+  // #1 - Recupere les donnees du panier en cours
+  let panier_en_cours = JSON.parse(localStorage.getItem("kanap_panier"));
+  if (!panier_en_cours) panier_en_cours = [];
+
+  // #2 - Recupere le bouton
+  let buttonAddToCart = document.getElementById("addToCart");
+
+  // #3  - ajoute la fonction au bouton
+  buttonAddToCart.addEventListener(
+    "click", // https://www.w3schools.com/jsref/met_element_addeventlistener.asp
+    // #4 - defini la fonction
+    function () {
       // informations du produit à ajouter au panier au format Json
-      let productJson = {
-          id : productId,
-          name : title.innerHTML,
-          price : price.innerHTML,
-          image : document.getElementById('imageItem').src,
-          altText : document.getElementById('imageItem').alt,
-          quantity : parseInt(document.getElementById('quantity').value, 10), // https://www.w3schools.com/jsreF/jsref_parseint.asp
-          color : document.getElementById('colors').value,
-      }
 
-      // Récupération de la liste des produits ajoutés au localStorage
-      let datasInStorage = JSON.parse(localStorage.getItem('product-ID'));
+      // #5 - defini le produit a ajouter
+      let produit_choisi = {
+        id: productId,
+        quantity: parseInt(document.getElementById("quantity").value, 10), // https://www.w3schools.com/jsreF/jsref_parseint.asp
+        color: document.getElementById("colors").value,
+      }; // end let
 
+      // #6 - ajoute le produit au panier
+
+      panier_en_cours.push(produit_choisi);
+      localStorage.setItem("kanap_panier", JSON.stringify(panier_en_cours));
     } // end function
+  ); // buttonAddToCart.addEventListener
+} // end function
+
+// Récupération de la liste des produits ajoutés au localStorage
+// let datasInStorage = JSON.parse(localStorage.getItem('product-ID'));
+
+//    verifier couleur et quantité autorisée
+
+function checkColor() {
+  let kanapColor = document.getElementById("colors").value;
+  if (kanapColor != "") {
+    // color ???
+    return true;
+  }
+} //end function
+
+// verifier quantité autorisée
+
+function checkQuantity() {
+  let kanapQuantity = document.getElementById("quantity").value;
+  if (kanapQuantity <= 100 && kanapQuantity > 0) {
+    return true;
+  }
+} // end function
