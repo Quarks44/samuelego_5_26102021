@@ -28,10 +28,15 @@ console.log(totalPrice);
 
 // dans la boucle ajouter les boutons supprimer pour chaque article
 
-let productSupprimer = document.createElement("p");
-productItemContentSettingsDelete.appendChild(productSupprimer);
-productSupprimer.className = "deleteItem";
-productSupprimer.innerHTML = "Supprimer";
+let settingsDelete = document.createElement("div");
+settingsDelete.classList.add("cart__item__content__settings__delete");
+settings.appendChild(settingsDelete);
+
+let deleteItem = document.createElement("p");
+deleteItem.innerHTML = "Supprimer";
+deleteItem.classList.add("deleteItem");
+settingsDelete.appendChild(deleteItem);
+
 // Hors boucle, afficher le total en bas du panier
 // Créer la fonction pour supprimer un article
 function deleteKanap() {
@@ -42,7 +47,10 @@ function deleteKanap() {
 
 // faire une boucle pour parser le tableau du panier
 // trouver le id de l'article a supprimer et le supprimer du tableau
+
 // Sauvegarder ce tableau comme le nouveau localStorage
 // Recharger la page
+
+location.reload();
 // Hors boucle, ajouter une fonction au bouton "passez commande"
 // créer la fonction  "passez commande" (fetch post)

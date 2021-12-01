@@ -70,17 +70,21 @@ function addToCart(productId) {
     function () {
       // informations du produit à ajouter au panier au format Json
 
-      // #5 - defini le produit a ajouter
-      let produit_choisi = {
-        id: productId,
-        quantity: parseInt(document.getElementById("quantity").value, 10), // https://www.w3schools.com/jsreF/jsref_parseint.asp
-        color: document.getElementById("colors").value,
-      }; // end let
+      if (checkColor() && checkQuantity()) {
+        // #5 - defini le produit a ajouter
+        let produit_choisi = {
+          id: productId,
+          quantity: parseInt(document.getElementById("quantity").value, 10), // https://www.w3schools.com/jsreF/jsref_parseint.asp
+          color: document.getElementById("colors").value,
+        }; // end let
 
-      // #6 - ajoute le produit au panier
+        // #6 - ajoute le produit au panier
 
-      panier_en_cours.push(produit_choisi);
-      localStorage.setItem("kanap_panier", JSON.stringify(panier_en_cours));
+        panier_en_cours.push(produit_choisi);
+        localStorage.setItem("kanap_panier", JSON.stringify(panier_en_cours));
+      } else {
+        alert("Veuillez choisir une couleur et une quantité");
+      }
     } // end function
   ); // buttonAddToCart.addEventListener
 } // end function
@@ -93,12 +97,9 @@ function addToCart(productId) {
 function checkColor() {
   let kanapColor = document.getElementById("colors").value;
   if (kanapColor != "") {
-    // color ???
     return true;
   }
 } //end function
-
-// verifier quantité autorisée
 
 function checkQuantity() {
   let kanapQuantity = document.getElementById("quantity").value;
