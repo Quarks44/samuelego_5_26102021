@@ -1,13 +1,8 @@
-// récupérer les données du localstorage (id/colors/qté)
-
 function getLocalStorage() {
   let datasInStorage = JSON.parse(localStorage.getItem("kanap_panier"));
   console.log(datasInStorage);
 
   let section_cart_item = document.getElementsById("cart__items");
-
-  // Faire une boucle qui affiche les données du localstorage
-
   if (datasInStorage === null || datasInStorage.length == 0) {
     section_cart_item.innerHTML = "Votre panier est vide";
   } else {
@@ -61,6 +56,16 @@ function getLocalStorage() {
 
       // input ???
 
+      let productQuantity = document.createElement("input");
+      productQuantity.type = "number";
+      productQuantity.name = "itemQuantity";
+      productQuantity.classList.add("itemQuantity");
+      productQuantity.min = 1;
+      productQuantity.max = 100;
+      productQuantity.value = product.quantity;
+      productQuantity.dataset.value = parseInt(product.quantity, 10);
+      settingsQuantity.appendChild(productQuantity);
+
       // supprimmer
 
       let settingsDelete = document.createElement("div");
@@ -73,60 +78,45 @@ function getLocalStorage() {
       settingsDelete.appendChild(deleteItem);
 
       section_cart_item.appendChild(article);
+
+      /* async function main() {
+        let url = new URL(location.href); //  url
+        let productId = url.searchParams.get("id");
+        let product = await fetchProductById(productId); // attendre reponse API
+        displayKanap(product); // affichage produit et passe le product ID
+        addToCart(productId); // Ajoute la fonctionalite au bouton "addToCart"
+      } // end function main
+      main();
+*/
+
+      let productTotalPrice = document.getElementById("totalPrice");
+      productTotalPrice.innerHTML = totalPrice;
+      console.log(totalPrice);
     } //end for
   } //end else
 } //end function
 
 getLocalStorage();
 
-// dans la boucle ajouter un fetch pour récupérer les autres données de chaque produit (prix, nom, etc.) et les afficher
+// suppression Kanap
 
-// dans la boucle ajouter le calcul du total du prix de la commande
-
-let productTotalPrice = document.getElementById("totalPrice");
-productTotalPrice.innerHTML = totalPrice;
-console.log(totalPrice);
-
-// dans la boucle ajouter les boutons supprimer pour chaque article
-
-let buttonDelete = document.getElementById("deleteItem");
-buttonAddToCart.addEventListener("click", function () {
-  let produit_supprimmer = {
-    id: productId,
-    quantity: parseInt(document.getElementById("quantity").value, 10), // https://www.w3schools.com/jsreF/jsref_parseint.asp
-    color: document.getElementById("colors").value,
-  };
-});
-
-// Hors boucle, afficher le total en bas du panier
-
-// Créer la fonction pour supprimer un article
-function deleteKanap() {
+function deleteItem() {
   let deleteProduct = document.querySelectorAll(".deleteItem");
-  for (let delButton of deleteProduct) {
-    delButton.addEventListener("click", function () {
-      let deleteProductInCart = delButton.closest("article");
+
+  for (let deleteButton of deleteProduct) {
+    deleteButton.addEventListener("click", function () {
+      let deleteProductInCart = deleteButton.closest("article");
       deleteProductInCart.remove();
 
-      for (let i = 0; i < datasInStorage.length; i++) {
-        if (deleteProductInCart.dataset.id == datasInStorage[i].id) {
-          datasInStorage.splice(i, 1); //https://www.w3schools.com/jsref/jsref_splice.asp
+      for (let x = 0; i < datasInStorage.length; x++) {
+        if (deleteProductInCart.dataset.id == datasInStorage[x].id) {
+          datasInStorage.splice(x, 1);
           localStorage.setItem("product-ID", JSON.stringify(datasInStorage));
         }
       }
+      totalQuantityPrices();
     });
   }
-} // end function deletekanap
-
-// faire une boucle pour parser le tableau du panier
-
-// trouver le id de l"article a supprimer et le supprimer du tableau
-
-// Sauvegarder ce tableau comme le nouveau localStorage
-
-// Recharger la page
+}
 
 location.reload();
-// Hors boucle, ajouter une fonction au bouton "passez commande"
-
-// créer la fonction  "passez commande" (fetch post)
