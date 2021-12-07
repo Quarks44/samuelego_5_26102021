@@ -16,7 +16,7 @@ function getLocalStorage() {
 
       // image
       let imageContent = document.createElement("div");
-      imageContent.classList.add("cart__item__img");
+      imageContent.classList.add("cart__item__img"); //https://www.w3schools.com/jsref/prop_element_classlist.asp
       let itemImage = document.createElement("img");
       itemImage.src = product.image;
       imageItem.alt = product.altText;
@@ -54,7 +54,7 @@ function getLocalStorage() {
       settingsQuantity.classList.add("cart__item__content__settings__quantity");
       settings.appendChild(settingsQuantity);
 
-      // input ???
+      // input Settings
 
       let productQuantity = document.createElement("input");
       productQuantity.type = "number";
@@ -63,7 +63,7 @@ function getLocalStorage() {
       productQuantity.min = 1;
       productQuantity.max = 100;
       productQuantity.value = product.quantity;
-      productQuantity.dataset.value = parseInt(product.quantity, 10);
+      productQuantity.dataset.value = parseInt(product.quantity, 10); //https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset
       settingsQuantity.appendChild(productQuantity);
 
       // supprimmer
@@ -118,5 +118,15 @@ function deleteItem() {
     });
   }
 }
+// input Question
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
+const address = document.getElementById("address");
+const city = document.getElementById("city");
+const email = document.getElementById("email");
+
+// A faire : fonction verification adresse, nom, ville
+
+// rechargement page
 
 location.reload();
