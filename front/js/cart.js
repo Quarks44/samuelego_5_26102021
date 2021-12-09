@@ -1,8 +1,13 @@
+// 1°) Récupération des données localStorage
 function getLocalStorage() {
   let datasInStorage = JSON.parse(localStorage.getItem("kanap_panier"));
   console.log(datasInStorage);
+}
 
-  let section_cart_item = document.getElementsById("cart__items");
+// 2°) fonction Panier (Boucle)      --- EN COURS ---
+
+function cart(product) {
+  let section_cart_item = document.getElementById("cart__items");
   if (datasInStorage === null || datasInStorage.length == 0) {
     section_cart_item.innerHTML = "Votre panier est vide";
   } else {
@@ -66,7 +71,7 @@ function getLocalStorage() {
       productQuantity.dataset.value = parseInt(product.quantity, 10); //https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset
       settingsQuantity.appendChild(productQuantity);
 
-      // supprimmer
+      //  bouton supprimmer
 
       let settingsDelete = document.createElement("div");
       settingsDelete.classList.add("cart__item__content__settings__delete");
@@ -78,46 +83,167 @@ function getLocalStorage() {
       settingsDelete.appendChild(deleteItem);
 
       section_cart_item.appendChild(article);
+    }
+  }
+} // end fonction cart
 
-      /* async function main() {
-        let url = new URL(location.href); //  url
-        let productId = url.searchParams.get("id");
-        let product = await fetchProductById(productId); // attendre reponse API
-        displayKanap(product); // affichage produit et passe le product ID
-        addToCart(productId); // Ajoute la fonctionalite au bouton "addToCart"
-      } // end function main
-      main();
-*/
+/* 3°) fonction Totaux
+Récupération totale des quantités
+Récupération prix total
+  */
+function totauxQuantityPrices() {
+  // Quantité Totale
+  let totalQuantity = 0;
+  for (let x = 0; x < productQuantity.length; x++) {
+    totalQuantity += parseInt(productQuantity[x].value);
+  }
+  totalQuantity.innerHTML = totalQuantity;
 
-      let productTotalPrice = document.getElementById("totalPrice");
-      productTotalPrice.innerHTML = totalPrice;
-      console.log(totalPrice);
-    } //end for
-  } //end else
-} //end function
+  // Prix Total
+  let allListPrice = document.querySelectorAll(
+    ".cart__item__content__titlePrice p"
+  );
+  let ProductPrices = 0;
+  for (let x = 0; x < allListPrice.length; x++) {
+    ProductPrices +=
+      parseInt(allListPrice[x].innerHTML) * productQuantity[x].value;
+  }
+  totalPrice.innerHTML = ProductPrices;
+} // end totalQuantityPrices
 
-getLocalStorage();
+// 4°) Fonction modif quantité
 
-// suppression Kanap
+function modifQuantity() {
+  for (let input of productQuantity) {
+    input.addEventListener("change", function () {
+      totauxQuantityPrices();
+      input.dataset.value = input.value;
+
+      for (let x = 0; x < datasInStorage.length; x++) {
+        datasInStorage[x].quantity = productQuantity[x].dataset.value;
+      }
+      localStorage.setItem("product-ID", JSON.stringify(datasInStorage));
+    });
+  }
+} // End function modifQuantity
+
+// 5°) Fonction Suppression d’un article
 
 function deleteItem() {
   let deleteProduct = document.querySelectorAll(".deleteItem");
 
   for (let deleteButton of deleteProduct) {
     deleteButton.addEventListener("click", function () {
-      let deleteProductInCart = deleteButton.closest("article");
-      deleteProductInCart.remove();
+      let deleteCart = deleteButton.closest("article");
+      deleteCart.remove();
 
-      for (let x = 0; i < datasInStorage.length; x++) {
-        if (deleteProductInCart.dataset.id == datasInStorage[x].id) {
+      for (let x = 0; x < datasInStorage.length; x++) {
+        if (deleteCart.dataset.id == datasInStorage[x].id) {
           datasInStorage.splice(x, 1);
           localStorage.setItem("product-ID", JSON.stringify(datasInStorage));
         }
       }
-      totalQuantityPrices();
+      totauxQuantityPrices();
     });
   }
+} // function deleteItem
+
+// 6°) Formulaire Contact (client)
+
+function createContact() {
+  contact = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    address: address.value,
+    city: city.value,
+    email: email.value,
+  };
+  return contact;
 }
+
+// 7°) Fonction Regexp
+
+function regex(valid) {
+  let control = true;
+
+  if (!valid.firstName.value.match(validName)) {
+    document.getElementById("firstNameErrorMsg").innerText =
+      "merci d'entrer un prénom valide ";
+    control = false;
+  } else {
+    document.getElementById("firstNameErrorMsg").innerText = "ok";
+  }
+  if (!valid.lastName.value.match(validName)) {
+    document.getElementById("lastNameErrorMsg").innerText =
+      "merci d'entrer un nom valide";
+    control = false;
+  } else {
+    document.getElementById("lastNameErrorMsg").innerText = "ok";
+  }
+  if (!valid.address.value.match(validAddress)) {
+    document.getElementById("addressErrorMsg").innerText =
+      "merci d'entrer une adresse valide";
+    control = false;
+  } else {
+    document.getElementById("addressErrorMsg").innerText = "ok";
+  }
+  if (!valid.city.value.match(validCity)) {
+    document.getElementById("cityErrorMsg").innerText =
+      "merci d'entrer une ville valide";
+    control = false;
+  } else {
+    document.getElementById("cityErrorMsg").innerText = "ok";
+  }
+  if (!valid.email.value.match(validEmail)) {
+    document.getElementById("emailErrorMsg").innerText =
+      "merci d'entrer un email valide";
+    control = false;
+  } else {
+    document.getElementById("emailErrorMsg").innerText = "ok";
+  }
+  if (valid) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// 8°) Fonction Envoi du client au localstorage
+
+/*
+
+1°) Récupération des données localStorage 
+2°) fonction Panier 
+(Boucle)
+  If (Panier vide)
+  Else
+  Insertion 	article	« cart__item »
+  " "		Element Div « cart__item__img »
+  " "		Image « img »
+  " "		Element Div « cart__item__content »
+  " "		Element Div « cart__item__content__titlePrice »
+  " "		Titre « H2 »
+  " "		Couleur « p »
+  " "		Prix « p »
+  " "		Element Div « cart__item__content__settings »
+  " "		Element Div « cart__item__content__settings__quantity »
+  " "		Quantité « p »
+  " "		Input Quantité « input »
+  " "		Element Div « cart__item__content__settings__delete »
+  " "		Supprimer « p »
+(Fin boucle)
+3°) fonction Totaux
+Récupération totale des quantités
+Récupération prix total
+4°) Fonction modif quantité
+5°) Fonction Suppression d’un article
+6°) Formulaire Contact (client)
+7°) Fonction Regexp
+8°) Fonction Envoi du client au localstorage 
+9°) Validation de la commande
+
+*/
+
 // input Question
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
@@ -125,8 +251,9 @@ const address = document.getElementById("address");
 const city = document.getElementById("city");
 const email = document.getElementById("email");
 
-// A faire : fonction verification adresse, nom, ville
+// Validation regex
 
-// rechargement page
-
-location.reload();
+const validName = /[a-zéèêàçï-\s]+$/i;
+const validAddress = /[0-9]+\s[a-z]+\s[a-zéèêçàï\s\-]+/i;
+const validCity = /[0-9]+\s[a-z]+\s[a-zéèêçàï\s\-]+/i;
+const validEmail = /[a-z0-9\.\-\_]+@[a-z]+\.[a-z]{2,3}/i;
