@@ -12,6 +12,27 @@ function cart(product) {
     section_cart_item.innerHTML = "Votre panier est vide";
   } else {
     for (let x in datasInStorage) {
+      productId = datasInStorage[x].id;
+      let requete_url = "localhost:3000/api/products/" + productId;
+      let product = await fetchProductById(productId);
+      createItem(product);
+
+      let requete_url = "localhost:3000/api/products/" + product.name;
+      let product = await fetchProductById(product.name);
+      createItem(product);
+
+      let requete_url = "localhost:3000/api/products/" + product.name;
+      let product = await fetchProductById(product.name);
+      createItem(product);
+
+      let requete_url = "localhost:3000/api/products/" + product.price;
+      let product = await fetchProductById(product.price);
+      createItem(product);
+
+      let requete_url = "localhost:3000/api/products/" + product.color;
+      let product = await fetchProductById(product.color);
+      createItem(product);
+
       //article
       let article = document.createElement("article");
       document.getElementById("cart__items").appendChild(article);
@@ -161,14 +182,13 @@ function createContact() {
   return contact;
 }
 
-// 7°) Fonction Regexp
+// 7°) Fonction Regexp + verification
 
 function regex(valid) {
   let control = true;
 
   if (!valid.firstName.value.match(validName)) {
-    document.getElementById("firstNameErrorMsg").innerText =
-      "merci d'entrer un prénom valide ";
+    document.getElementById("").innerText = "merci d'entrer un prénom valide ";
     control = false;
   } else {
     document.getElementById("firstNameErrorMsg").innerText = "ok";
@@ -208,7 +228,66 @@ function regex(valid) {
   }
 }
 
-// 8°) Fonction Envoi du client au localstorage
+function verifData() {
+  let validFirstName = verifData(firstName, validName);
+  let validLastName = verifData(lastName, validName);
+  let validAdress = verifData(address, validAddress);
+  let validCity = verifData(city, validCity);
+  let validEmail = verifData(email, validEmail);
+  if (
+    validFirstName &&
+    validLastName &&
+    validAdress &&
+    validCity &&
+    validEmail
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// 8°) bouton commander + Validation Commande
+const commandButton = document.querySelector(
+  ".cart__order__form__submit input"
+);
+
+function validation(orderId) {
+  // balise dans confirmation
+  submitButton.addEventListener("click", function () {
+    let confirmationURL = "confirmation.html?id=" + orderId;
+    submitForm.action = confirmationURL;
+    submitForm.method = "post";
+  });
+}
+// 9°)  numero Commande
+
+function number(order) {
+  fetch(orderURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(order),
+  })
+    .then(function (response) {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .then(function (data) {
+      submitOrder(data.orderId);
+    });
+}
+
+// 10°) balise + affichage
+
+const checkOrderId = document.getElementById("orderId");
+
+function confirm() {
+  checkOrderId.innerHTML = newOrderId;
+  localStorage.clear();
+}
 
 /*
 
@@ -257,3 +336,5 @@ const validName = /[a-zéèêàçï-\s]+$/i;
 const validAddress = /[0-9]+\s[a-z]+\s[a-zéèêçàï\s\-]+/i;
 const validCity = /[0-9]+\s[a-z]+\s[a-zéèêçàï\s\-]+/i;
 const validEmail = /[a-z0-9\.\-\_]+@[a-z]+\.[a-z]{2,3}/i;
+
+// 8°) Fonction Envoi du client au localstorage
