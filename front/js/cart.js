@@ -260,7 +260,15 @@ function validation(orderId) {
     submitForm.method = "post";
   });
 }
-// 9°)  numero Commande
+// 9°)  numero Commande + validation
+
+function submitCommand(orderId) {
+  submitButton.addEventListener("click", function () {
+    let confirmationURL = "confirmation.html?id=" + orderId;
+    submitForm.action = confirmationURL;
+    submitForm.method = "post";
+  });
+}
 
 function number(order) {
   fetch(orderURL, {
@@ -276,7 +284,7 @@ function number(order) {
       }
     })
     .then(function (data) {
-      submitOrder(data.orderId);
+      submitCommand(data.orderId);
     });
 }
 
