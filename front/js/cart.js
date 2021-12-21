@@ -299,4 +299,4 @@ async function fetchProductById(productId) {
       console.log(error);
     });
 } // end function fetchProductById
-cartKanap();
+Cart();
