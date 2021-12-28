@@ -3,7 +3,7 @@ let datasInStorage = JSON.parse(localStorage.getItem("cartItems"));
 
 // contenu du panier
 async function displayCart() {
-  const parser = new DOMParser();
+  const parser = new DOMParser(); //https://developer.mozilla.org/fr/docs/Web/API/DOMParser
   const positionEmptyCart = document.getElementById("cart__items");
   let cartArray = [];
 
@@ -47,7 +47,7 @@ async function displayCart() {
     let totalPrice = 0;
     for (i = 0; i < datasInStorage.length; i++) {
       const article = await getProductById(datasInStorage[i].id);
-      totalQuantity += parseInt(datasInStorage[i].quantity);
+      totalQuantity += parseInt(datasInStorage[i].quantity); // https://www.w3schools.com/jsref/jsref_parseint.asp
       console.log(totalQuantity);
       totalPrice += parseInt(article.price * datasInStorage[i].quantity);
       console.log(totalPrice);
@@ -94,6 +94,7 @@ function modifyQuantity() {
       let cartItems = localStorage.getItem("cartItems");
       let items = JSON.parse(cartItems);
       const resultat = items.find((product) => {
+        //https://www.w3schools.com/jsref/jsref_find.asp
         if (product.id === dataId && product.color === dataColor) return true;
         return false;
       });
@@ -106,7 +107,7 @@ function modifyQuantity() {
         });
       }
       let itemsStr = JSON.stringify(items);
-      localStorage.setItem("cartItems", itemsStr);
+      localStorage.setItem("cartItems", itemsStr); //https://www.w3schools.com/jsref/met_storage_setitem.asp
       location.reload();
     });
   }); // end quantityInputs.forEach
@@ -114,7 +115,7 @@ function modifyQuantity() {
 
 // Suppression d'un canapé
 function deleteItem() {
-  const deleteButtons = document.querySelectorAll(".deleteItem");
+  const deleteButtons = document.querySelectorAll(".deleteItem"); //https://www.w3schools.com/jsref/met_document_queryselectorall.asp
   console.log(deleteButtons);
   deleteButtons.forEach((deleteButton) => {
     deleteButton.addEventListener("click", (event) => {
@@ -123,6 +124,8 @@ function deleteItem() {
       const deleteColor = event.target.getAttribute("data-color");
       console.log(deleteId, deleteColor);
       datasInStorage = datasInStorage.filter(
+        //https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
         (element) => !(element.id == deleteId && element.color == deleteColor)
       );
       deleteConfirm = window.confirm("Voulez-vous supprimé cet article ?");
@@ -222,7 +225,7 @@ order.addEventListener("click", (e) => {
   ) {
     window.confirm("Coordonnées imcomplètes");
   } else if (
-    validName.test(firstName.value) == false ||
+    validName.test(firstName.value) == false || // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
     validName.test(lastName.value) == false ||
     validAddress.test(address.value) == false ||
     validName.test(city.value) == false ||
@@ -232,6 +235,7 @@ order.addEventListener("click", (e) => {
   } else {
     let products = [];
     datasInStorage.forEach((order) => {
+      // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
       products.push(order.id);
       console.log(products);
     });
