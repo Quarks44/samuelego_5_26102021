@@ -10,13 +10,14 @@ function addToCart(productItem) {
   // Si panier vide
   if (cartItems === null) {
     let items = [productItem];
-    let itemsStr = JSON.stringify(items);
+    let itemsStr = JSON.stringify(items); // https://www.w3schools.com/js/js_json_stringify.asp
     localStorage.setItem("cartItems", itemsStr);
     alert("Produit ajouté au panier !");
   } else {
     // Si le panier contient des produits de même id et même couleur
     let items = JSON.parse(cartItems);
     const resultat = items.find((product) => {
+      // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/find
       if (product.id === productItem.id && product.color === productItem.color)
         return true;
       return false;
@@ -82,7 +83,7 @@ function displayProduct() {
   // Ecoute événèment sur le bouton ajouter au panier
   const cartButton = document.getElementById("addToCart");
   cartButton.addEventListener("click", (event) => {
-    event.preventDefault();
+    event.preventDefault(); // https://www.w3schools.com/jsref/event_preventdefault.asp
     let productColor = document.getElementById("colors").value;
     let productQuantity = parseInt(document.getElementById("quantity").value);
     // Si aucune couleur sélectionnée
