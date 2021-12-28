@@ -12,7 +12,7 @@ async function Cart() {
     idEmptyCart.innerHTML = emptyCart;
   } else {
     for (x = 0; x < datasInStorage.length; x++) {
-      const product = await getProductById(datasInStorage[x].id);
+      const product = await fetchProductById(datasInStorage[x].id);
       const totalPriceKanap = product.price * datasInStorage[x].quantity;
       console.log(totalPriceKanap);
       cartArray += `     
@@ -30,7 +30,8 @@ async function Cart() {
            <div class="cart__item__content__settings">
              <div class="cart__item__content__settings__quantity">
                <p>Qté : </p>
-               <input data-id= ${datasInStorage[x].id} data-color= ${datasInStorage[x].color} type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${datasInStorage[x].quantity}>
+               <input data-id= ${datasInStorage[x].id} data-color= ${datasInStorage[x].color} type="number" class="itemQuantity" 
+               name="itemQuantity" min="1" max="100" value=${datasInStorage[x].quantity}>
              </div>
              <div class="cart__item__content__settings__delete">
                <p data-id= ${datasInStorage[x].id} data-color= ${datasInStorage[x].color} class="deleteItem">Supprimer</p>
@@ -145,10 +146,10 @@ function deleteItem() {
 // Formulaire Contact (client)
 
 // Constante regex
-const validName = /[a-zéèêàçï-\s]+$/i;
-const validAddress = /[0-9]+\s[a-z]+\s[a-zéèêçàï\s\-]+/i;
-const validCity = /[0-9]+\s[a-z]+\s[a-zéèêçàï\s\-]+/i;
-const validEmail = /[a-z0-9\.\-\_]+@[a-z]+\.[a-z]{2,3}/i;
+const validName = /^[0-9a-zA-Zçñàéèêëïîôüù '-\.]+$/;
+const validAddress = /^[0-9a-zA-Zçñàéèêëïîôüù '-\.]+$/;
+const validCity = /^[0-9a-zA-Zçñàéèêëïîôüù '-\.]+$/;
+const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 // Constante input Question
 const firstName = document.getElementById("firstName");
@@ -160,60 +161,61 @@ const email = document.getElementById("email");
 firstName.addEventListener("input", (event) => {
   event.preventDefault();
   if (validName.test(firstName.value) == false || firstName.value == "") {
-    document.getElementById("firstNameError").innerHTML = "Prénom non valide";
+    document.getElementById("firstNameErrorMsg").innerHTML =
+      "Prénom non valide";
   } else {
-    document.getElementById("firstNameError").innerHTML = "";
+    document.getElementById("firstNameErrorMsg").innerHTML = "";
   }
 });
 lastName.addEventListener("input", (event) => {
   event.preventDefault();
   if (validName.test(lastName.value) == false || lastName.value == "") {
-    document.getElementById("lastNameError").innerHTML = "Nom non valide";
+    document.getElementById("lastNameErrorMsg").innerHTML = "Nom non valide";
   } else {
-    document.getElementById("lastNameError").innerHTML = "";
+    document.getElementById("lastNameErrorMsg").innerHTML = "";
   }
 });
 address.addEventListener("input", (event) => {
   event.preventDefault();
   if (validAddress.test(address.value) == false || address.value == "") {
-    document.getElementById("addressError").innerHTML = "Adresse non valide";
+    document.getElementById("addressErrorMsg").innerHTML = "Adresse non valide";
   } else {
-    document.getElementById("addressError").innerHTML = "";
+    document.getElementById("addressErrorMsg").innerHTML = "";
   }
 });
 city.addEventListener("input", (event) => {
   event.preventDefault();
   if (validCity.test(city.value) == false || city.value == "") {
-    document.getElementById("cityError").innerHTML = "Ville non valide";
+    document.getElementById("cityErrorMsg").innerHTML = "Ville non valide";
   } else {
-    document.getElementById("cityError").innerHTML = "";
+    document.getElementById("cityErrorMsg").innerHTML = "";
   }
 });
 email.addEventListener("input", (event) => {
   event.preventDefault();
   if (validEmail.test(email.value) == false || email.value == "") {
-    document.getElementById("emailError").innerHTML = "Email non valide";
+    document.getElementById("emailErrorMsg").innerHTML = "Email non valide";
   } else {
-    document.getElementById("emailError").innerHTML = "";
+    document.getElementById("emailErrorMsg").innerHTML = "";
   }
 });
 
 // écoute donnée
 function listenDatas() {
-  listenDatas(firstName, validName, firstNameError);
-  listenDatas(lastName, validName, lastNameError);
-  listenDatas(address, validAddress, addressError);
-  listenDatas(city, validCity, cityError);
-  listenDatas(email, validEmail, emailError);
+  listenDatas(firstName, validName, firstNameErrorMsg);
+  listenDatas(lastName, validName, lastNameErrorMsg);
+  listenDatas(address, validAddress, addressErrorMsg);
+  listenDatas(city, validCity, cityErrorMsg);
+  listenDatas(email, validEmail, emailErrorMsg);
 }
 
 // verification données formulaire
 function checkDatas() {
-  let FirstNameCheck = checkDatas(firstName, validName, firstNameError);
-  let LastNameCheck = checkDatas(lastName, validName, lastNameError);
-  let AdressCheck = checkDatas(address, validAddress, addressError);
-  let CityCheck = checkDatas(city, validCity, cityError);
-  let EmailCheck = checkDatas(email, validEmail, emailError);
+  let FirstNameCheck = checkDatas(firstName, validName, firstNameErrorMsg);
+  let LastNameCheck = checkDatas(lastName, validName, lastNameErrorMsg);
+  let AdressCheck = checkDatas(address, validAddress, addressErrorMsg);
+  let CityCheck = checkDatas(city, validCity, cityErrorMsg);
+  let EmailCheck = checkDatas(email, validEmail, emailErrorMsg);
   if (
     FirstNameCheck &&
     LastNameCheck &&
@@ -231,8 +233,8 @@ function checkDatas() {
 // Fonction Envoi du client au localstorage
 
 let order = document.getElementById("order"); // ligne 143
-order.addEventListener("click", (o) => {
-  e.preventDefault();
+order.addEventListener("click", (x) => {
+  x.preventDefault();
   // creation array recup contact
   let contact = {
     firstName: firstName.value,
@@ -252,10 +254,10 @@ order.addEventListener("click", (o) => {
     window.confirm("Coordonnées imcomplètes");
   } else {
     let products = [];
-    datasInStorage.forEach((order) => {
-      products.push(order.id);
-      console.log(products);
-    });
+    for (let x = 0; x < datasInStorage.length; x++) {
+      products.push(datasInStorage[x].id);
+    }
+    console.log(products);
 
     // "passez commande" (fetch post) */
     // appel de api order pour envoi array
@@ -282,9 +284,6 @@ order.addEventListener("click", (o) => {
       });
   }
 });
-
-// Récupération du numéro de commande
-const commandNumber = document.getElementById("orderId");
 
 // Fonction Principale
 
