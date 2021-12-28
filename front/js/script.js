@@ -17,7 +17,7 @@ async function getProducts() {
 
 // Récupération des données et intégration dans le DOM
 async function displayProducts() {
-  const parser = new DOMParser();
+  const parser = new DOMParser(); //https://developer.mozilla.org/fr/docs/Web/API/DOMParser
   const products = await getProducts();
   console.log("displayProducts", products);
   let productsSection = document.getElementById("items");
