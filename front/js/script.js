@@ -1,55 +1,36 @@
-//  API
-async function fetchApi() {
-  return fetch("http://localhost:3000/api/products")
+// Appel à l'API products
+displayProducts();
+async function getProducts() {
+  return await fetch("http://localhost:3000/api/products")
     .then(function (res) {
-      if (res.ok) {
-        return res.json();
-      }
+      return res.json();
     })
-    .catch(function (error) {
-      console.log(error);
+    .then(function (value) {
+      console.log(value);
+      return value;
+    })
+    .catch(function (err) {
+      // Une erreur est survenue
+      console.log(err);
     });
-} // end function
+} // end function getProducts
 
-// Affichage plusieurs produits
-
-function displayAllKanaps(listofAllKanaps) {
-  let = document.getElementById("items");
-  //  lien  fiche produit
-  const sofaId = document.createElement("a");
-  sofaId.href = "product.html?id=" + listofAllKanaps._id;
-
-  // Création Article
-  const article = document.createElement("article");
-
-  // Création Images
-  const newProductPhoto = document.createElement("img");
-  newProductPhoto.src = listofAllKanaps.imageUrl;
-  newProductPhoto.alt = listofAllKanaps.altTxt;
-
-  // Création Name
-  const newProductTitle = document.createElement("h3");
-  newProductTitle.innerHTML = listofAllKanaps.name;
-  newProductTitle.classList.add("productName");
-
-  // Création Description
-  const newProductDescription = document.createElement("p");
-  newProductDescription.innerHTML = listofAllKanaps.description;
-  newProductDescription.classList.add("productDescription");
-
-  // Ajout des éléments
-  article.appendChild(newProductPhoto);
-  article.appendChild(newProductTitle);
-  article.appendChild(newProductDescription);
-  sofaId.appendChild(article);
-  document.getElementById("items").appendChild(sofaId);
-} // end function
-
-// Principale Fonction
-async function main() {
-  let listofAllKanaps = await fetchApi();
-  for (let kanap of listofAllKanaps) {
-    displayAllKanaps(kanap); // affichage
+// Récupération des données et intégration dans le DOM
+async function displayProducts() {
+  const parser = new DOMParser();
+  const products = await getProducts();
+  console.log("displayProducts", products);
+  let productsSection = document.getElementById("items");
+  for (i = 0; i < products.length; i++) {
+    let productsItems = `
+      <a href="./product.html?id=${products[i]._id}">
+      <article>
+      <img src="${products[i].imageUrl}" alt="${products[i].altTxt}">
+      <h3 class="productName">${products[i].name}</h3>
+      <p class="productDescription">${products[i].description}</p>
+      </article> 
+      </a>`;
+    const displayShop = parser.parseFromString(productsItems, "text/html");
+    productsSection.appendChild(displayShop.body.firstChild);
   }
-}
-main();
+} // end function displayProducts
