@@ -2,6 +2,7 @@
 const str = window.location;
 const url = new URL(str);
 const productId = url.searchParams.get("id");
+console.log(productId);
 const objectURL = "http://localhost:3000/api/products/" + productId;
 
 // Ajout d'un produit au panier
