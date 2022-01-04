@@ -1,21 +1,47 @@
-// localstorage
+// Page panier
+
+/* Sur cette page, l’utilisateur va pouvoir modifier la quantité d’un produit de son panier ; à cemoment, 
+le total du panier devra bien se mettre à jour.L’utilisateur aura aussi la possibilité de supprimer un produit de son panier, 
+le produit devra donc disparaître de la page.Les inputs des utilisateurs doivent être analysés et validés pour vérifier
+le format et le type de données avant l’envoi à l’API. Il ne serait par exemple pas recevable d’accepter unprénom contenant
+des chiffres, ou une adresse e-mail ne contenant pas de symbole “@”. Encas de problème de saisie, un message d’erreur devra 
+être affiché en dessous du champcorrespondant. */
+
+/* Sur cette page, l’utilisateur va pouvoir modifier la quantité d’un produit de son panier ; à cemoment, 
+le total du panier devra bien se mettre à jour.L’utilisateur aura aussi la possibilité de supprimer un produit 
+de son panier, le produit devradonc disparaître de la page.Les inputs des utilisateurs doivent être analysés et
+validés pour vérifier le format et le typede données avant l’envoi à l’API. Il ne serait par exemple pas recevable 
+d’accepter unprénom contenant des chiffres, ou une adresse e-mail ne contenant pas de symbole “@”. Encas de problème 
+de saisie, un message d’erreur devra être affiché en dessous du champ correspondant. */
+
+// // Récupération des produits dans le local storage
 let datasInStorage = JSON.parse(localStorage.getItem("cartItems"));
+console.log(
+  "Test #11 - variable: datasInStorage = articles présent ou non dans le panier"
+);
+console.log(datasInStorage);
 
 // contenu du panier
 async function displayCart() {
-  const parser = new DOMParser(); //https://developer.mozilla.org/fr/docs/Web/API/DOMParser
+  const parser = new DOMParser();
   const positionEmptyCart = document.getElementById("cart__items");
   let cartArray = [];
 
   // Si le localstorage est vide
   if (datasInStorage === null || datasInStorage == 0) {
+    console.log("Test #12 - panier vide");
+    console.log("Le panier est vide");
     positionEmptyCart.textContent = "Votre panier est vide";
   } else {
     // Si le localstorage contient des canapés
     for (i = 0; i < datasInStorage.length; i++) {
       const product = await getProductById(datasInStorage[i].id);
+      console.log(
+        "Test #13 - variable product = description des produits dans le panier"
+      );
+      console.log(product);
       const totalPriceItem = (product.price *= datasInStorage[i].quantity);
-      console.log(totalPriceItem);
+
       cartArray += `
        <article class="cart__item" data-id=${datasInStorage[i].id}>
        <div class="cart__item__img">
@@ -42,18 +68,19 @@ async function displayCart() {
      </article>
      `;
     }
+
     // Nombre total d'articles et prix total du panier
     let totalQuantity = 0;
     let totalPrice = 0;
     for (i = 0; i < datasInStorage.length; i++) {
       const article = await getProductById(datasInStorage[i].id);
-      totalQuantity += parseInt(datasInStorage[i].quantity); // https://www.w3schools.com/jsref/jsref_parseint.asp
-      console.log(totalQuantity);
+      totalQuantity += parseInt(datasInStorage[i].quantity);
       totalPrice += parseInt(article.price * datasInStorage[i].quantity);
-      console.log(totalPrice);
     }
     document.getElementById("totalQuantity").innerHTML = totalQuantity;
     document.getElementById("totalPrice").innerHTML = totalPrice;
+    console.log("Test #14 - variable: totalPrice  = prix total");
+    console.log(totalPrice);
     if (i == datasInStorage.length) {
       const displayBasket = parser.parseFromString(cartArray, "text/html");
       positionEmptyCart.appendChild(displayBasket.body);
@@ -81,20 +108,18 @@ displayCart();
 // Modification de la quantité
 function modifyQuantity() {
   const quantityInputs = document.querySelectorAll(".itemQuantity");
-  console.log(quantityInputs);
   quantityInputs.forEach((quantityInput) => {
     quantityInput.addEventListener("change", (event) => {
       event.preventDefault();
-      console.log(event);
       const inputValue = event.target.value;
       const dataId = event.target.getAttribute("data-id");
-      console.log(event.target.getAttribute("data-id"));
       const dataColor = event.target.getAttribute("data-color");
-      console.log(event.target.getAttribute("data-color"));
       let cartItems = localStorage.getItem("cartItems");
       let items = JSON.parse(cartItems);
       const resultat = items.find((product) => {
-        //https://www.w3schools.com/jsref/jsref_find.asp
+        console.log("Test #15 - variable: items = résultat apres modication");
+        console.log(items);
+        // console.timeLog(items);
         if (product.id === dataId && product.color === dataColor) return true;
         return false;
       });
@@ -107,7 +132,7 @@ function modifyQuantity() {
         });
       }
       let itemsStr = JSON.stringify(items);
-      localStorage.setItem("cartItems", itemsStr); //https://www.w3schools.com/jsref/met_storage_setitem.asp
+      localStorage.setItem("cartItems", itemsStr);
       location.reload();
     });
   }); // end quantityInputs.forEach
@@ -115,13 +140,19 @@ function modifyQuantity() {
 
 // Suppression d'un canapé
 function deleteItem() {
-  const deleteButtons = document.querySelectorAll(".deleteItem"); //https://www.w3schools.com/jsref/met_document_queryselectorall.asp
+  const deleteButtons = document.querySelectorAll(".deleteItem");
+  console.log(
+    "Test #16 - variable:deleteButtons = produit pouvant etre supprimé"
+  );
   console.log(deleteButtons);
   deleteButtons.forEach((deleteButton) => {
     deleteButton.addEventListener("click", (event) => {
       event.preventDefault();
       const deleteId = event.target.getAttribute("data-id");
       const deleteColor = event.target.getAttribute("data-color");
+      console.log(
+        "Test #17 - variable: deleteId = Faut-il supprimé le produit ?? "
+      );
       console.log(deleteId, deleteColor);
       datasInStorage = datasInStorage.filter(
         //https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
@@ -207,6 +238,8 @@ email.addEventListener("input", (event) => {
 let order = document.getElementById("order");
 order.addEventListener("click", (e) => {
   e.preventDefault();
+  console.log("Test #18 - variable:order = erreur données non conforme");
+  console.log(order);
   // Tableau données de l'utilisateur
   let contact = {
     firstName: firstName.value,
@@ -225,7 +258,7 @@ order.addEventListener("click", (e) => {
   ) {
     window.confirm("Coordonnées imcomplètes");
   } else if (
-    validName.test(firstName.value) == false || // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
+    validName.test(firstName.value) == false ||
     validName.test(lastName.value) == false ||
     validAddress.test(address.value) == false ||
     validName.test(city.value) == false ||
@@ -235,9 +268,7 @@ order.addEventListener("click", (e) => {
   } else {
     let products = [];
     datasInStorage.forEach((order) => {
-      // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
       products.push(order.id);
-      console.log(products);
     });
 
     let pageOrder = { contact, products };

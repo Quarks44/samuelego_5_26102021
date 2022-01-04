@@ -1,3 +1,10 @@
+// Page d'accueil
+
+/* Une page d’accueil montrant (de manière dynamique) tous les articles disponibles à la vente.
+Cette page présente l’ensemble des produits retournés par l’API. Pour chaque produit, il faudra afficher l’image de celui-ci,
+ainsi que son nom et le début de sa description. En cliquant sur le produit,
+l’utilisateur sera redirigé sur la page du produit pour consulter celui-ci plus en détail. */
+
 // Appel à l'API products
 displayProducts();
 async function getProducts() {
@@ -6,6 +13,9 @@ async function getProducts() {
       return res.json();
     })
     .then(function (value) {
+      console.log(
+        "Test #01 - variable: products = tous les articles + descriptions"
+      );
       console.log(value);
       return value;
     })
@@ -13,13 +23,12 @@ async function getProducts() {
       // Une erreur est survenue
       console.log(err);
     });
-} // end function getProducts
+}
 
 // Récupération des données et intégration dans le DOM
 async function displayProducts() {
-  const parser = new DOMParser(); //https://developer.mozilla.org/fr/docs/Web/API/DOMParser
+  const parser = new DOMParser();
   const products = await getProducts();
-  console.log("displayProducts", products);
   let productsSection = document.getElementById("items");
   for (i = 0; i < products.length; i++) {
     let productsItems = `
@@ -33,4 +42,5 @@ async function displayProducts() {
     const displayShop = parser.parseFromString(productsItems, "text/html");
     productsSection.appendChild(displayShop.body.firstChild);
   }
-} // end function displayProducts
+  console.log("displayProducts", products);
+}

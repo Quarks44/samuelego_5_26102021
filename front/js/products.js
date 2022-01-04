@@ -1,7 +1,15 @@
+// Page Produit
+
+/* Une page “produit” qui affiche (de manière dynamique) les détails du produit sur lequel l'utilisateur a cliqué depuis la page d’accueil.
+/Depuis cette page, l’utilisateur peut sélectionner une quantité, une couleur, et ajouter le produit à son panier.
+Cette page présente un seul produit ; elle aura un menu déroulant permettant à l'utilisateur de choisir une option de personnalisation, 
+ainsi qu’un input pour saisir la quantité. Ces éléments doivent être pris en compte dans le panier. */
+
 // récupération id
 const str = window.location;
 const url = new URL(str);
 const productId = url.searchParams.get("id");
+console.log("Test #02 - variable: productId = id du produit");
 console.log(productId);
 const objectURL = "http://localhost:3000/api/products/" + productId;
 
@@ -37,8 +45,8 @@ function addToCart(productItem) {
     let itemsStr = JSON.stringify(items);
     localStorage.setItem("cartItems", itemsStr);
     alert("Produit ajouté au panier !");
-  } // end else panier produit id + couleur
-} //  end function addToCart
+  }
+}
 
 // Récupération des produits de l'API
 function displayProduct() {
@@ -54,23 +62,43 @@ function displayProduct() {
     // Insertion des données de l'API dans le DOM (titre, img, nom, prix, description et option couleurs)
     .then(function (getProduct) {
       const product = getProduct;
+      console.log(
+        "Test #03 - variable: product = description totale du produit"
+      );
+      console.log(product);
 
       let productTitle = document.querySelector("title");
       productTitle.textContent = `${product.name}`;
+      console.log("Test #04 - variable: productTitle = Nom du produit");
+      console.log(productTitle);
 
       let productImg = document.createElement("img");
       document.querySelector(".item__img").appendChild(productImg);
       productImg.setAttribute("src", `${product.imageUrl}`);
       productImg.setAttribute("alt", `${product.altTxt}`);
+      console.log(
+        "Test #05 - variable: productImg = image du produit et description"
+      );
+      console.log(productImg);
 
       let productName = document.getElementById("title");
       productName.textContent = `${product.name}`;
 
+      console.log("Test #06 - variable: productName = nom du produit");
+      console.log(productName);
+
       let productPrice = document.getElementById("price");
       productPrice.textContent = `${product.price}`;
 
+      console.log("Test #07 - variable: productPrice = prix du produit");
+      console.log(productPrice);
+
       let productDescription = document.getElementById("description");
-      productDescription.textContent = `${product.name}`;
+      productDescription.textContent = `${product.description}`;
+      console.log(
+        "Test #08 - variable: productDescription = description du produit en latin !"
+      );
+      console.log(productDescription);
 
       document.querySelector("#colors").insertAdjacentHTML(
         "beforeend",
@@ -79,12 +107,17 @@ function displayProduct() {
             `<option id= "valueColor" value="${color}">${color}</option>`
         )
       );
-    }); // end then(function (getProduct)
+      console.log(
+        "Test #09 - variable: valueColor = option couleur du produit"
+      );
+      console.log(valueColor);
+    });
 
   // Ecoute événèment sur le bouton ajouter au panier
   const cartButton = document.getElementById("addToCart");
+  // Écoute du bouton et envoie au panier
   cartButton.addEventListener("click", (event) => {
-    event.preventDefault(); // https://www.w3schools.com/jsref/event_preventdefault.asp
+    event.preventDefault();
     let productColor = document.getElementById("colors").value;
     let productQuantity = parseInt(document.getElementById("quantity").value);
     // Si aucune couleur sélectionnée
@@ -104,6 +137,10 @@ function displayProduct() {
       quantity: productQuantity,
     };
     addToCart(productOptions);
-  }); // end const cartButton
-} // end function displayProduct
+    console.log(
+      "Test #10 - variable: productOptions = ajout produit au panier avec couleur, ID et quantité"
+    );
+    console.log(productOptions);
+  });
+}
 displayProduct();
