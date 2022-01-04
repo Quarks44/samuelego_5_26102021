@@ -26,7 +26,6 @@ function addToCart(productItem) {
     // Si le panier contient des produits de même id et même couleur
     let items = JSON.parse(cartItems);
     const resultat = items.find((product) => {
-      // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/find
       if (product.id === productItem.id && product.color === productItem.color)
         return true;
       return false;

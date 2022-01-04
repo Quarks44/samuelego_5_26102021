@@ -4,7 +4,7 @@
 
 const params = new URL(document.location).searchParams;
 const orderId = params.get("orderId");
-console.log("Test #19 - variable = nueméro de commande");
+console.log("Test #19 - variable = numéro de commande");
 console.log(orderId);
 document.getElementById("orderId").textContent = orderId;
 alert("Commande effectuée avec succès");
